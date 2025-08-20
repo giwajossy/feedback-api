@@ -1,0 +1,8 @@
+summary: Health check
+description: This endpoint can be used to check if the API is live.
+responses:
+  200:
+    description: API is live
+    examples:
+      application/json:
+        message: "Feedback API is live!"

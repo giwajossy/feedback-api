@@ -1,23 +1,24 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flasgger import Swagger, swag_from
 from middleware.request_logger import setup_request_logger
 from validators import validate_feedback
+from swagger_docs.swagger_config import template
 
 # Initialize Flask app
 app = Flask(__name__)
 
 CORS(app)
 
+Swagger(app, template=template)
+
 setup_request_logger(app)
 
-# In-memery storage for feedback
+# In-memory storage for feedback
 feedback_store = []
 
-def is_valid_email(email: str) -> bool:
-    return re.match(r"[^@]+@[^@]+\.[^@]+", email) is not None
-
-
 @app.route("/api/feedback", methods=["POST"])
+@swag_from("swagger_docs/feedback_swagger.yml")
 def submit_feedback():
     data = request.get_json() or {}
 
@@ -26,17 +27,17 @@ def submit_feedback():
     if error:
         return error, 400
 
-    feedback_store.append(data)
+    feedback_store.append(validated_data)
 
     return jsonify({
         "message": "Feedback received successfully",
-        "data": data
+        "data": validated_data
     }), 201
 
 
 @app.route("/")
+@swag_from("swagger_docs/health_check_swagger.yml")
 def home():
-    """Health check endpoint to verify server is running."""
     return jsonify({"message": "Feedback API is live!"}), 200
 
 if __name__ == "__main__":
