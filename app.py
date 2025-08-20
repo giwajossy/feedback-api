@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from validators import validate_feedback
 
 # Initialize Flask app
 app = Flask(__name__)
+
+
+CORS(app)
 
 # In-memery storage for feedback
 feedback_store = []
