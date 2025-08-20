@@ -1,7 +1,24 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# In-memery storage for feedback
+feedback_store = []
+
+@app.route("/api/feedback", methods=["POST"])
+def submit_feedback():
+    """Handle user feedback submission."""
+    data = request.get_json()
+
+    # For now, no validation
+    feedback_store.append(data)
+
+    return jsonify({
+        "message": "Feedback received successfully",
+        "data": data
+    }), 201
+
 
 @app.route("/")
 def home():
