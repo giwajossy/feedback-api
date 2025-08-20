@@ -1,0 +1,33 @@
+summary: Submit a new feedback
+description: This endpoint allows users to submit their feedback.
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/Feedback'
+responses:
+  201:
+    description: Feedback received successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: '#/definitions/Feedback'
+    examples:
+      application/json:
+        message: "Feedback received successfully"
+        data:
+          rating: 5
+          opinion: "Great API!"
+          research: true
+          email: "test@example.com"
+  400:
+    description: Invalid input
+    schema:
+      $ref: '#/definitions/Error'
+    examples:
+      application/json:
+        message: "Rating is required"
