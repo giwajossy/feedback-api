@@ -14,11 +14,11 @@ template = {
                     "type": "integer",
                     "description": "Rating from 1 to 5"
                 },
-                "opinion": {
+                "improvementText": {
                     "type": "string",
-                    "description": "User's opinion"
+                    "description": "User's improvement text"
                 },
-                "research": {
+                "interestedInResearch": {
                     "type": "boolean",
                     "description": "Opt-in for research"
                 },
