@@ -21,8 +21,8 @@ responses:
         message: "Feedback received successfully"
         data:
           rating: 5
-          opinion: "Great API!"
-          research: true
+          improvementText: "Great API!"
+          interestedInResearch: true
           email: "test@example.com"
   400:
     description: Invalid input
