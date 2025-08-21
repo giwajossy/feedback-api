@@ -11,8 +11,8 @@ def client():
 def test_valid_feedback_submission(client):
     payload = {
         "rating": 5,
-        "opinion": "Great service!",
-        "research": True,
+        "improvementText": "Great service!",
+        "interestedInResearch": True,
         "email": "test@example.com"
     }
     response = client.post("/api/feedback", json=payload)
@@ -25,8 +25,8 @@ def test_valid_feedback_submission(client):
 def test_invalid_rating(client):
     payload = {
         "rating": 6,
-        "opinion": "Too high",
-        "research": False
+        "improvementText": "Too high",
+        "interestedInResearch": False
     }
     response = client.post("/api/feedback", json=payload)
     assert response.status_code == 400
@@ -35,7 +35,7 @@ def test_invalid_rating(client):
 def test_missing_opinion(client):
     payload = {
         "rating": 3,
-        "research": False
+        "interestedInResearch": False
     }
     response = client.post("/api/feedback", json=payload)
     assert response.status_code == 201  
@@ -46,8 +46,8 @@ def test_missing_opinion(client):
 def test_research_opt_in_without_email(client):
     payload = {
         "rating": 4,
-        "opinion": "Looks good",
-        "research": True
+        "improvementText": "Looks good",
+        "interestedInResearch": True
         # Missing email
     }
     response = client.post("/api/feedback", json=payload)
