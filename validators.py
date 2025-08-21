@@ -15,13 +15,13 @@ def validate_feedback(data: dict):
         return jsonify({"status": "error", "error": "Rating must be an integer between 1 and 5"}), None
 
     # Validate opinion length
-    opinion = data.get("opinion")
-    if opinion and len(opinion) > 500:
-        return jsonify({"status": "error", "error": "Opinion cannot exceed 500 characters"}), None
+    improvementText = data.get("improvementText")
+    if improvementText and len(improvementText) > 500:
+        return jsonify({"status": "error", "error": "Improvement text cannot exceed 500 characters"}), None
 
     # Validate research + email
-    research = data.get("research", False)
-    if research:
+    interestedInResearch = data.get("interestedInResearch", False)
+    if interestedInResearch:
         email = data.get("email")
         if not email or not is_valid_email(email):
             return jsonify({"status": "error", "error": "Valid email is required if research opt-in is true"}), None
