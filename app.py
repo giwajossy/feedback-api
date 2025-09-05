@@ -1,33 +1,52 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flasgger import Swagger, swag_from
 from middleware.request_logger import setup_request_logger
 from validators import validate_feedback
 from swagger_docs.swagger_config import template
+from models import db, Feedback
 
 # Initialize Flask app
 app = Flask(__name__)
 
-CORS(app)
+# Database Configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://localhost/feedback_db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
+CORS(app)
 Swagger(app, template=template)
+db.init_app(app)
 
 setup_request_logger(app)
 
-# In-memory storage for feedback
-feedback_store = []
+@app.cli.command("init-db")
+def init_db():
+    """Initialize the database."""
+    db.create_all()
+    print("Initialized the database.")
 
 @app.route("/api/feedback", methods=["POST"])
 @swag_from("swagger_docs/feedback_swagger.yml")
 def submit_feedback():
     data = request.get_json() or {}
 
-   # Run validation
+    # Run validation
     error, validated_data = validate_feedback(data)
     if error:
         return error, 400
 
-    feedback_store.append(validated_data)
+    # Create feedback entry
+    new_feedback = Feedback(
+        rating=validated_data.get('rating'),
+        improvementText=validated_data.get('improvementText'),
+        interestedInResearch=validated_data.get('interestedInResearch', False),
+        email=validated_data.get('email')
+    )
+
+    db.session.add(new_feedback)
+    db.session.commit()
 
     return jsonify({
         "message": "Feedback received successfully",
