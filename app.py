@@ -23,20 +23,16 @@ def create_app(config_overrides=None):
         if not database_url:
             raise RuntimeError("DATABASE_URL is not set in the environment.")
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-
+\
     CORS(app)
     Swagger(app, template=template)
     db.init_app(app)
 
-    setup_request_logger(app)
-
-    # For now, routes are defined directly on the app
-    
-    @app.cli.command("init-db")
-    def init_db_command():
-        """Initialize the database."""
+    # Create tables if they don't exist
+    with app.app_context():
         db.create_all()
-        print("Initialized the database.")
+
+    setup_request_logger(app)
 
     @app.route("/api/feedback", methods=["POST"])
     @swag_from("swagger_docs/feedback_swagger.yml")
