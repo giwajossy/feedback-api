@@ -1,11 +1,20 @@
 import pytest
-from app import app
+from app import create_app, db
 
 @pytest.fixture
 def client():
-    app.config["TESTING"] = True
-    with app.test_client() as client:
-        yield client
+    """Create and configure a new app instance for each test."""
+    # Create the app with a specific test configuration
+    app = create_app({
+        'TESTING': True,
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:'
+    })
+
+    with app.app_context():
+        db.create_all()
+        yield app.test_client()  # The test client is yielded
+        db.session.remove()
+        db.drop_all()
 
 
 def test_valid_feedback_submission(client):
@@ -38,7 +47,7 @@ def test_missing_opinion(client):
         "interestedInResearch": False
     }
     response = client.post("/api/feedback", json=payload)
-    assert response.status_code == 201  
+    assert response.status_code == 201
     data = response.get_json()
     assert data["message"] == "Feedback received successfully"
 
