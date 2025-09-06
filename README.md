@@ -43,6 +43,10 @@ Health check endpoint to confirm the API is live.
 
 ## Run Locally
 
+#### Prerequisites
+- Python 3 
+- PostgreSQL service running 
+
 #### 1. Clone repo & setup virtual environment
 ```bash
 git clone https://github.com/giwajossy/feedback-api.git
@@ -56,23 +60,18 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 #### 3. Create and setup the database
-##### (Optional) Create a database named 'feedback_db'
 ```bash
+ # [Optional] Create a database named 'feedback_db'
  createdb feedback_db
-```
 
-##### Set the database URL environment variable for the current session
-```bash
+ # Set the database URL environment variable for the current session 
  export DATABASE_URL='postgresql+psycopg://localhost/feedback_db'
 ```
 
-##### Initialize the database table
-```bash
- flask init-db
-```
 
 #### 4. Run the server (development)
 ```bash
+# The database table will be created automatically on startup
 flask run
 ```
 
