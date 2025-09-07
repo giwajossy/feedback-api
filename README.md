@@ -9,8 +9,7 @@ User feedback mechanism
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
 - [Features](#features)
-- [API Endpoints](#api-endpoints)
-- [Run Locally](#run-locally)
+- [Development Environment](#development-environment)
 - [Testing](#testing)
 - [Note](#note)
 
@@ -23,6 +22,7 @@ This project implements a simple feedback collection API. It is lightweight, dem
 - **Flask**
 - **PostgreSQL**
 - **Flask-SQLAlchemy**
+- **Docker** 
 - **Gunicorn**
 - **Flasgger**
 
@@ -30,52 +30,22 @@ This project implements a simple feedback collection API. It is lightweight, dem
 - **Feedback Submission**: Collects feedback including rating, opinion, and optional contact info.
 - **Data Validation**: Ensures feedback data adheres to predefined rules.
 - **Persistent Storage**: Uses PostgreSQL to persist feedback.
-- **Modular API Design**: Separation of concerns with dedicated modules for validation, request logging, and Swagger documentation.
-- **Health Check Endpoint**: A basic endpoint to verify API availability.
+- **Containerized**: Fully containerized with Docker for consistent development and deployment.
 
-## API Endpoints
+## Development Environment [docker]
+**Prerequisites:** 
+Docker Desktop installed and running.
 
-### `POST /api/feedback`
-Submits new user feedback.
+**Instructions:** 
 
-### `GET /`
-Health check endpoint to confirm the API is live.
-
-## Run Locally
-
-#### Prerequisites
-- Python 3 
-- PostgreSQL service running 
-
-#### 1. Clone repo & setup virtual environment
+1.  Clone the repository. 
+2.  Navigate to the project directory.
+3.  Run the following command:
 ```bash
-git clone https://github.com/giwajossy/feedback-api.git
-cd feedback-api
-python3 -m venv venv
-source venv/bin/activate
+docker compose up --build
 ```
+The API will be available at `http://localhost:8000`
 
-#### 2. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-#### 3. Create and setup the database
-```bash
- # [Optional] Create a database named 'feedback_db'
- createdb feedback_db
-
- # Set the database URL environment variable for the current session 
- export DATABASE_URL='postgresql+psycopg://localhost/feedback_db'
-```
-
-
-#### 4. Run the server (development)
-```bash
-# The database table will be created automatically on startup
-flask run
-```
-
-The access root route via `http://127.0.0.1:5000`
 
 ## Testing
 To run the tests, execute the following command in your terminal:
