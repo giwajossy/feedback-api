@@ -32,7 +32,7 @@ This project implements a simple feedback collection API. It is lightweight, dem
 - **Persistent Storage**: Uses PostgreSQL to persist feedback.
 - **Containerized**: Fully containerized with Docker for consistent development and deployment.
 
-## Development Environment [docker]
+## Development Environment
 **Prerequisites:** 
 Docker Desktop installed and running.
 
